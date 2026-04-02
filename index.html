@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartGuard – Smart Road Safety System | Convergence 2026</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- ========== PARTICLE CANVAS BACKGROUND ========== -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
+        <span class="logo-text">Smart<span class="accent">Guard</span></span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#demo">Live Demo</a></li>
+        <li><a href="#impact">Impact</a></li>
+        <li><a href="#team">Team</a></li>
+      </ul>
+      <div class="nav-badge">
+        <span>HT202603</span>
+      </div>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== HERO SECTION ========== -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="convergence-badge">
+        <i class="fas fa-trophy"></i>
+        <span>CONVERGENCE 2026 · April 2–3 · Problem ID: HT202603</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="line1">SMART</span>
+        <span class="line2 accent-glow">GUARD</span>
+        <span class="line3">Road Safety System</span>
+      </h1>
+      <p class="hero-subtitle">
+        AI-Powered · IoT-Enabled · Zero Blind Spots · Real-Time Collision Prevention
+      </p>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-num" data-target="1.35">0</div>
+          <div class="stat-label">Million Deaths/Year<br><small>(WHO, Road Accidents)</small></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" data-target="40">0</div>
+          <div class="stat-label">% Rural Road Accidents<br><small>in Ghat/Blind Zones</small></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" data-target="300">0</div>
+          <div class="stat-label">ms Response Time<br><small>SmartGuard Detection</small></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" data-target="95">0</div>
+          <div class="stat-label">% Detection Accuracy<br><small>All Weather Conditions</small></div>
+        </div>
+      </div>
+      <div class="hero-cta">
+        <a href="#demo" class="btn-primary"><i class="fas fa-play-circle"></i> Watch Live Demo</a>
+        <a href="#solution" class="btn-secondary"><i class="fas fa-microchip"></i> Explore Solution</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="road-animation" id="roadAnimation">
+        <div class="road-scene">
+          <!-- Road -->
+          <div class="road">
+            <div class="road-line" id="roadLine"></div>
+            <div class="curve-indicator">
+              <div class="curve-svg-wrap">
+                <svg viewBox="0 0 200 200" width="200" height="200">
+                  <path d="M 100 200 Q 180 100 100 0" stroke="#f59e0b" stroke-width="4" fill="none" stroke-dasharray="8,4"/>
+                  <text x="110" y="110" fill="#ef4444" font-size="11" font-family="Orbitron">BLIND CURVE</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <!-- Vehicles -->
+          <div class="vehicle vehicle-a" id="vehicleA">
+            <div class="vehicle-body"><i class="fas fa-car"></i></div>
+            <div class="vehicle-light red-light blink"></div>
+          </div>
+          <div class="vehicle vehicle-b" id="vehicleB">
+            <div class="vehicle-body"><i class="fas fa-truck"></i></div>
+            <div class="vehicle-light red-light blink"></div>
+          </div>
+          <!-- Sensor Nodes -->
+          <div class="sensor-node node-left" id="nodeLeft">
+            <div class="node-ring"></div>
+            <div class="node-icon"><i class="fas fa-satellite-dish"></i></div>
+            <div class="node-label">Sensor A</div>
+            <div class="signal-wave"></div>
+          </div>
+          <div class="sensor-node node-right" id="nodeRight">
+            <div class="node-ring"></div>
+            <div class="node-icon"><i class="fas fa-satellite-dish"></i></div>
+            <div class="node-label">Sensor B</div>
+            <div class="signal-wave"></div>
+          </div>
+          <!-- Alert Board -->
+          <div class="alert-board" id="alertBoard">
+            <div class="alert-text blink-alert">⚠ VEHICLE APPROACHING</div>
+          </div>
+          <!-- Status -->
+          <div class="system-status" id="systemStatus">
+            <div class="status-dot green"></div>
+            <span>SmartGuard ACTIVE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROBLEM SECTION ========== -->
+  <section class="section problem-section" id="problem">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag"><i class="fas fa-exclamation-triangle"></i> THE PROBLEM</div>
+        <h2>Roads Are <span class="accent">Killing People</span> Silently</h2>
+        <p class="section-desc">Blind curves, zero visibility, and absent warning systems in rural & ghat areas make every drive a gamble.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card" data-delay="0">
+          <div class="problem-icon red"><i class="fas fa-eye-slash"></i></div>
+          <h3>Zero Visibility</h3>
+          <p>Blind curves and turns with no line-of-sight cause head-on collisions at high speed.</p>
+        </div>
+        <div class="problem-card" data-delay="100">
+          <div class="problem-icon orange"><i class="fas fa-cloud-rain"></i></div>
+          <h3>Adverse Weather</h3>
+          <p>Fog, heavy rain, and dust reduce visibility to near zero, making static signboards useless.</p>
+        </div>
+        <div class="problem-card" data-delay="200">
+          <div class="problem-icon yellow"><i class="fas fa-road"></i></div>
+          <h3>No Streetlights</h3>
+          <p>Rural and ghat roads lack adequate lighting infrastructure, making night driving deadly.</p>
+        </div>
+        <div class="problem-card" data-delay="300">
+          <div class="problem-icon blue"><i class="fas fa-wifi"></i></div>
+          <h3>Poor Connectivity</h3>
+          <p>Remote areas lack 4G/5G coverage, making cloud-based solutions unreliable.</p>
+        </div>
+        <div class="problem-card" data-delay="400">
+          <div class="problem-icon purple"><i class="fas fa-sign"></i></div>
+          <h3>Static Signboards</h3>
+          <p>Passive reflectors and signs offer no real-time intelligence about approaching vehicles.</p>
+        </div>
+        <div class="problem-card" data-delay="500">
+          <div class="problem-icon teal"><i class="fas fa-rupee-sign"></i></div>
+          <h3>High Infrastructure Cost</h3>
+          <p>Existing smart road systems are expensive and impractical for rural deployment at scale.</p>
+        </div>
+      </div>
+      <!-- Accident Stats Visual -->
+      <div class="stats-visual">
+        <div class="stat-bar-wrapper">
+          <h3>Top Causes of Rural Road Accidents in India</h3>
+          <div class="bar-group">
+            <div class="bar-label">Blind Curves / Turns</div>
+            <div class="bar-track"><div class="bar-fill" style="width:0%" data-width="72%"></div></div>
+            <span class="bar-pct">72%</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">Night / Low Visibility</div>
+            <div class="bar-track"><div class="bar-fill" style="width:0%" data-width="65%"></div></div>
+            <span class="bar-pct">65%</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">No Warning Systems</div>
+            <div class="bar-track"><div class="bar-fill" style="width:0%" data-width="58%"></div></div>
+            <span class="bar-pct">58%</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">Weather Conditions</div>
+            <div class="bar-track"><div class="bar-fill" style="width:0%" data-width="43%"></div></div>
+            <span class="bar-pct">43%</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar-label">Poor Road Lighting</div>
+            <div class="bar-track"><div class="bar-fill" style="width:0%" data-width="51%"></div></div>
+            <span class="bar-pct">51%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SOLUTION SECTION ========== -->
+  <section class="section solution-section" id="solution">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag"><i class="fas fa-lightbulb"></i> OUR SOLUTION</div>
+        <h2>SmartGuard – <span class="accent">Intelligent Warning System</span></h2>
+        <p class="section-desc">A real-time, offline-capable, AI-enhanced vehicle detection and alert network for blind curves.</p>
+      </div>
+      <div class="solution-overview">
+        <div class="solution-diagram">
+          <div class="diagram-node sensor-node-diag" id="diagSensorA">
+            <div class="diag-icon"><i class="fas fa-radar"></i></div>
+            <span>Ultrasonic<br>+ PIR Sensor</span>
+          </div>
+          <div class="diagram-arrow right"><i class="fas fa-arrow-right"></i></div>
+          <div class="diagram-node mcu-node" id="diagMCU">
+            <div class="diag-icon"><i class="fas fa-microchip"></i></div>
+            <span>ESP32<br>MCU</span>
+          </div>
+          <div class="diagram-arrow right"><i class="fas fa-arrow-right"></i></div>
+          <div class="diagram-node alert-node-diag" id="diagAlert">
+            <div class="diag-icon"><i class="fas fa-bell"></i></div>
+            <span>LED Matrix<br>+ Buzzer</span>
+          </div>
+          <div class="data-flow-line" id="dataFlowLine"></div>
+        </div>
+        <div class="solution-features-list">
+          <div class="sol-feature">
+            <div class="sol-icon"><i class="fas fa-bolt"></i></div>
+            <div>
+              <strong>Instant Detection</strong>
+              <p>Ultrasonic sensors detect vehicles at up to 8 meters with &lt;300ms latency</p>
+            </div>
+          </div>
+          <div class="sol-feature">
+            <div class="sol-icon"><i class="fas fa-wifi"></i></div>
+            <div>
+              <strong>Mesh Communication</strong>
+              <p>ESP-NOW peer-to-peer wireless — works without internet, no SIM needed</p>
+            </div>
+          </div>
+          <div class="sol-feature">
+            <div class="sol-icon"><i class="fas fa-sun"></i></div>
+            <div>
+              <strong>Solar Powered</strong>
+              <p>Fully off-grid operation with 20W solar panels and Li-Po battery backup</p>
+            </div>
+          </div>
+          <div class="sol-feature">
+            <div class="sol-icon"><i class="fas fa-brain"></i></div>
+            <div>
+              <strong>AI Classification (Optional)</strong>
+              <p>Edge AI on ESP32-S3 differentiates cars, trucks, bikes using TensorFlow Lite</p>
+            </div>
+          </div>
+          <div class="sol-feature">
+            <div class="sol-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div>
+              <strong>Cloud Dashboard</strong>
+              <p>When network available, real-time data sent to Firebase analytics dashboard</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Tech Stack -->
+      <div class="tech-stack">
+        <h3>Technology Stack</h3>
+        <div class="tech-grid">
+          <div class="tech-item">
+            <div class="tech-icon iot"><i class="fas fa-microchip"></i></div>
+            <div class="tech-label">IoT & Embedded</div>
+            <div class="tech-desc">ESP32, Arduino, Raspberry Pi</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon sensor"><i class="fas fa-satellite-dish"></i></div>
+            <div class="tech-label">Sensors</div>
+            <div class="tech-desc">HC-SR04, PIR, LDR, DHT11</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon comm"><i class="fas fa-broadcast-tower"></i></div>
+            <div class="tech-label">Communication</div>
+            <div class="tech-desc">ESP-NOW, LoRa, MQTT</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon ai"><i class="fas fa-brain"></i></div>
+            <div class="tech-label">AI / CV</div>
+            <div class="tech-desc">TensorFlow Lite, Edge Impulse</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon cloud"><i class="fas fa-cloud"></i></div>
+            <div class="tech-label">Cloud</div>
+            <div class="tech-desc">Firebase, Node-RED, Grafana</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-icon power"><i class="fas fa-solar-panel"></i></div>
+            <div class="tech-label">Power</div>
+            <div class="tech-desc">Solar + Li-Po (72hr backup)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SYSTEM ARCHITECTURE ========== -->
+  <section class="section arch-section" id="architecture">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag"><i class="fas fa-project-diagram"></i> ARCHITECTURE</div>
+        <h2>System <span class="accent">Architecture</span></h2>
+        <p class="section-desc">Three-layer architecture ensuring reliability, scalability, and low latency.</p>
+      </div>
+      <div class="arch-diagram">
+        <!-- Layer 1: Edge -->
+        <div class="arch-layer">
+          <div class="layer-label">LAYER 1 · EDGE DETECTION</div>
+          <div class="arch-nodes-row">
+            <div class="arch-node edge-node">
+              <i class="fas fa-satellite-dish"></i>
+              <span>Ultrasonic<br>Sensor</span>
+            </div>
+            <div class="arch-node edge-node">
+              <i class="fas fa-eye"></i>
+              <span>PIR Motion<br>Sensor</span>
+            </div>
+            <div class="arch-node edge-node">
+              <i class="fas fa-camera"></i>
+              <span>Camera<br>(Optional AI)</span>
+            </div>
+            <div class="arch-node edge-node">
+              <i class="fas fa-sun"></i>
+              <span>LDR Light<br>Sensor</span>
+            </div>
+          </div>
+        </div>
+        <div class="arch-arrow-down"><i class="fas fa-arrow-down"></i> ESP32 Processes & Transmits via ESP-NOW</div>
+        <!-- Layer 2: Fog/Processing -->
+        <div class="arch-layer">
+          <div class="layer-label">LAYER 2 · FOG PROCESSING</div>
+          <div class="arch-nodes-row">
+            <div class="arch-node fog-node">
+              <i class="fas fa-microchip"></i>
+              <span>ESP32<br>Node A</span>
+            </div>
+            <div class="arch-node fog-node central">
+              <i class="fas fa-server"></i>
+              <span>Central<br>Controller</span>
+              <div class="central-badge">CORE</div>
+            </div>
+            <div class="arch-node fog-node">
+              <i class="fas fa-microchip"></i>
+              <span>ESP32<br>Node B</span>
+            </div>
+          </div>
+        </div>
+        <div class="arch-arrow-down"><i class="fas fa-arrow-down"></i> Alert Triggered + Data Logged</div>
+        <!-- Layer 3: Output + Cloud -->
+        <div class="arch-layer">
+          <div class="layer-label">LAYER 3 · ALERT OUTPUT + CLOUD</div>
+          <div class="arch-nodes-row">
+            <div class="arch-node output-node">
+              <i class="fas fa-lightbulb"></i>
+              <span>LED Warning<br>Boards</span>
+            </div>
+            <div class="arch-node output-node">
+              <i class="fas fa-volume-up"></i>
+              <span>Buzzer<br>Alert</span>
+            </div>
+            <div class="arch-node output-node">
+              <i class="fas fa-tv"></i>
+              <span>LED Matrix<br>Display</span>
+            </div>
+            <div class="arch-node output-node cloud-arch">
+              <i class="fas fa-cloud"></i>
+              <span>Firebase<br>Dashboard</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Flow Chart -->
+      <div class="flow-chart">
+        <h3>Detection → Alert Flow</h3>
+        <div class="flow-steps">
+          <div class="flow-step active" data-step="1">
+            <div class="step-num">1</div>
+            <div class="step-icon"><i class="fas fa-car"></i></div>
+            <div class="step-text">Vehicle enters detection zone (8m range)</div>
+          </div>
+          <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+          <div class="flow-step" data-step="2">
+            <div class="step-num">2</div>
+            <div class="step-icon"><i class="fas fa-microchip"></i></div>
+            <div class="step-text">ESP32 reads sensor &amp; calculates distance</div>
+          </div>
+          <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+          <div class="flow-step" data-step="3">
+            <div class="step-num">3</div>
+            <div class="step-icon"><i class="fas fa-wifi"></i></div>
+            <div class="step-text">ESP-NOW packet sent to opposite sensor node</div>
+          </div>
+          <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+          <div class="flow-step" data-step="4">
+            <div class="step-num">4</div>
+            <div class="step-icon"><i class="fas fa-bell"></i></div>
+            <div class="step-text">LED board + buzzer activates in &lt;300ms</div>
+          </div>
+          <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+          <div class="flow-step" data-step="5">
+            <div class="step-num">5</div>
+            <div class="step-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="step-text">Event logged to Firebase for analytics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURES SECTION ========== -->
+  <section class="section features-section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag"><i class="fas fa-star"></i> KEY FEATURES</div>
+        <h2>Why SmartGuard <span class="accent">Wins</span></h2>
+        <p class="section-desc">Every design decision made for maximum impact, minimum cost, and real-world deployment.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card big-card">
+          <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+          <h3>Sub-300ms Response</h3>
+          <p>From vehicle detection to LED + buzzer alert activation in under 300 milliseconds — faster than human reaction time.</p>
+          <div class="feature-metric">
+            <div class="metric-bar">
+              <div class="metric-fill" style="width:0%" data-width="95%"></div>
+            </div>
+            <span>Performance Score: 95/100</span>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-signal"></i></div>
+          <h3>Offline First</h3>
+          <p>ESP-NOW mesh works with zero internet. No SIM cards, no subscriptions.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-solar-panel"></i></div>
+          <h3>Solar Powered</h3>
+          <p>20W panel + 18Ah battery gives 72-hour backup even with zero sunlight.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-thermometer-half"></i></div>
+          <h3>All-Weather</h3>
+          <p>IP65-rated enclosure. Operates from -10°C to 60°C. Rain, fog, dust – no problem.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-rupee-sign"></i></div>
+          <h3>₹3,500/Node</h3>
+          <p>Complete node hardware cost under ₹3,500 including enclosure and solar panel.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+          <h3>Scalable Network</h3>
+          <p>Add unlimited nodes along any highway. Each node is autonomous and self-contained.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-brain"></i></div>
+          <h3>Edge AI Ready</h3>
+          <p>ESP32-S3 supports TinyML for vehicle type classification and speed estimation.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>Analytics Dashboard</h3>
+          <p>Real-time Firebase dashboard showing accident hotspots, traffic patterns, alert history.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== LIVE DEMO SIMULATION ========== -->
+  <section class="section demo-section" id="demo">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag"><i class="fas fa-play-circle"></i> LIVE DEMO</div>
+        <h2>Interactive <span class="accent">System Simulation</span></h2>
+        <p class="section-desc">Experience SmartGuard in action. Simulate real-world scenarios and watch the system respond.</p>
+      </div>
+      <div class="demo-wrapper">
+        <!-- Simulation Canvas -->
+        <div class="simulation-container">
+          <canvas id="simCanvas" width="700" height="380"></canvas>
+          <div class="sim-overlay" id="simOverlay">
+            <button class="btn-primary" id="startSim"><i class="fas fa-play"></i> Start Simulation</button>
+          </div>
+        </div>
+        <!-- Controls -->
+        <div class="demo-controls">
+          <h3><i class="fas fa-sliders-h"></i> Simulation Controls</h3>
+          <div class="control-group">
+            <label>Scenario</label>
+            <div class="scenario-btns">
+              <button class="scenario-btn active" data-scenario="normal">Normal Traffic</button>
+              <button class="scenario-btn" data-scenario="collision">Near Collision</button>
+              <button class="scenario-btn" data-scenario="fog">Foggy Night</button>
+              <button class="scenario-btn" data-scenario="heavy">Heavy Truck</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <label>Vehicle Speed: <span id="speedVal">60</span> km/h</label>
+            <input type="range" id="speedSlider" min="20" max="120" value="60" class="slider"/>
+          </div>
+          <div class="control-group">
+            <label>Detection Range: <span id="rangeVal">8</span> m</label>
+            <input type="range" id="rangeSlider" min="3" max="15" value="8" class="slider"/>
+          </div>
+          <div class="control-group">
+            <label>Weather</label>
+            <div class="toggle-row">
+              <label class="toggle"><input type="checkbox" id="fogToggle"/><span class="toggle-slider"></span></label>
+              <span>Enable Fog</span>
+            </div>
+            <div class="toggle-row">
+              <label class="toggle"><input type="checkbox" id="nightToggle"/><span class="toggle-slider"></span></label>
+              <span>Night Mode</span>
+            </div>
+          </div>
+          <!-- System Status Panel -->
+          <div class="status-panel">
+            <h4><i class="fas fa-tachometer-alt"></i> System Status</h4>
+            <div class="status-row">
+              <span>Sensor A</span>
+              <span class="status-indicator" id="sensorAStatus">IDLE</span>
+            </div>
+            <div class="status-row">
+              <span>Sensor B</span>
+              <span class="status-indicator" id="sensorBStatus">IDLE</span>
+            </div>
+            <div class="status-row">
+              <span>Alert Board A</span>
+              <span class="status-indicator" id="alertAStatus">OFF</span>
+            </div>
+            <div class="status-row">
+              <span>Alert Board B</span>
+              <span class="status-indicator" id="alertBStatus">OFF</span>
+            </div>
+            <div class="status-row">
+              <span>Response Time</span>
+              <span class="status-indicator" id="responseTime">-- ms</span>
+            </div>
+            <div class="status-row">
+              <span>Events Today</span>
+              <span class="status-indicator" id="eventCount">0</span>
+            </div>
+          </div>
+          <div class="event-log" id="eventLog">
+            <h4><i class="fas fa-list"></i> Event Log</h4>
+            <div class="log-entries" id="logEntries"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== IMPACT & ANALYTICS ========== -->
+  <section class="section impact-section" id="impact">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag"><i class="fas fa-chart-bar"></i> IMPACT & ANALYTICS</div>
+        <h2>Measurable <span class="accent">Impact</span></h2>
+        <p class="section-desc">Data-driven projections based on pilot study analysis and WHO accident statistics.</p>
+      </div>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-icon green"><i class="fas fa-shield-alt"></i></div>
+          <div class="impact-num" data-target="68">0</div>
+          <div class="impact-unit">%</div>
+          <div class="impact-label">Projected Accident<br>Reduction</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-icon blue"><i class="fas fa-rupee-sign"></i></div>
+          <div class="impact-num" data-target="3500">0</div>
+          <div class="impact-unit">₹</div>
+          <div class="impact-label">Cost Per<br>Node Unit</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-icon orange"><i class="fas fa-clock"></i></div>
+          <div class="impact-num" data-target="300">0</div>
+          <div class="impact-unit">ms</div>
+          <div class="impact-label">Alert Response<br>Time</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-icon purple"><i class="fas fa-map-marked-alt"></i></div>
+          <div class="impact-num" data-target="50000">0</div>
+          <div class="impact-unit">+</div>
+          <div class="impact-label">Hazardous Blind<br>Curves in India</div>
+        </div>
+      </div>
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <h3>Accident Reduction Projection</h3>
+          <div style="height:280px; position:relative;">
+            <canvas id="reductionChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>System Performance by Weather</h3>
+          <div style="height:280px; position:relative;">
+            <canvas id="weatherChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Cost Comparison (per node)</h3>
+          <div style="height:280px; position:relative;">
+            <canvas id="costChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <!-- Deployment Map -->
+      <div class="deployment-section">
+        <h3><i class="fas fa-map-marked-alt"></i> Target Deployment Zones</h3>
+        <div class="deployment-map">
+          <div class="map-placeholder">
+            <div class="map-overlay-text">India – Ghat Road Hotspots</div>
+            <div class="map-points">
+              <div class="map-dot" style="left:42%;top:35%"><div class="map-tooltip">Western Ghats</div></div>
+              <div class="map-dot" style="left:55%;top:60%"><div class="map-tooltip">Eastern Ghats</div></div>
+              <div class="map-dot" style="left:28%;top:25%"><div class="map-tooltip">Himalayan Roads</div></div>
+              <div class="map-dot" style="left:60%;top:20%"><div class="map-tooltip">Northeast Hill Passes</div></div>
+              <div class="map-dot" style="left:35%;top:65%"><div class="map-tooltip">Nilgiri Hills</div></div>
+              <div class="map-dot pulsing" style="left:50%;top:48%"><div class="map-tooltip">National Avg. Hotspot</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ROADMAP ========== -->
+  <section class="section roadmap-section" id="roadmap">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag"><i class="fas fa-road"></i> ROADMAP</div>
+        <h2>Development <span class="accent">Timeline</span></h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item done">
+          <div class="tl-marker"><i class="fas fa-check"></i></div>
+          <div class="tl-content">
+            <div class="tl-phase">Phase 1 – Prototype</div>
+            <div class="tl-time">Week 1–2</div>
+            <p>Hardware assembly, sensor calibration, basic ESP32 firmware</p>
+          </div>
+        </div>
+        <div class="timeline-item done">
+          <div class="tl-marker"><i class="fas fa-check"></i></div>
+          <div class="tl-content">
+            <div class="tl-phase">Phase 2 – Communication</div>
+            <div class="tl-time">Week 3–4</div>
+            <p>ESP-NOW mesh setup, bidirectional node pairing, alert trigger logic</p>
+          </div>
+        </div>
+        <div class="timeline-item active">
+          <div class="tl-marker"><i class="fas fa-cog fa-spin"></i></div>
+          <div class="tl-content">
+            <div class="tl-phase">Phase 3 – Alert Systems</div>
+            <div class="tl-time">Week 5–6 ← NOW</div>
+            <p>LED matrix programming, buzzer patterns, enclosure design, field testing</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-marker"><i class="fas fa-circle"></i></div>
+          <div class="tl-content">
+            <div class="tl-phase">Phase 4 – Cloud Integration</div>
+            <div class="tl-time">Week 7–8</div>
+            <p>Firebase logging, Node-RED dashboard, mobile alert app (PWA)</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-marker"><i class="fas fa-circle"></i></div>
+          <div class="tl-content">
+            <div class="tl-phase">Phase 5 – AI Enhancement</div>
+            <div class="tl-time">Week 9–10</div>
+            <p>TensorFlow Lite deployment, vehicle classification, speed estimation</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="tl-marker"><i class="fas fa-flag"></i></div>
+          <div class="tl-content">
+            <div class="tl-phase">Phase 6 – Pilot Deployment</div>
+            <div class="tl-time">Month 3+</div>
+            <p>Real-world deployment on 3 identified blind curves, government partnership</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TEAM SECTION ========== -->
+  <section class="section team-section" id="team">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag"><i class="fas fa-users"></i> THE TEAM</div>
+        <h2>The <span class="accent">Builders</span></h2>
+        <p class="section-desc">A passionate team of engineers solving real problems with technology.</p>
+      </div>
+      <div class="team-grid" id="teamGrid">
+        <!-- Team cards injected by JS -->
+      </div>
+      <div class="hackathon-badge-section">
+        <div class="hbadge">
+          <div class="hbadge-logo"><i class="fas fa-trophy"></i></div>
+          <div class="hbadge-text">
+            <div class="hbadge-title">Convergence 2026</div>
+            <div class="hbadge-sub">Smart Infrastructure & Road Safety · Problem HT202603</div>
+            <div class="hbadge-date">April 2–3, 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <i class="fas fa-shield-alt"></i>
+        <span>SmartGuard</span>
+      </div>
+      <p class="footer-tagline">Saving Lives. One Blind Curve at a Time.</p>
+      <div class="footer-tags">
+        <span>#IoT</span>
+        <span>#EmbeddedSystems</span>
+        <span>#SmartInfrastructure</span>
+        <span>#RoadSafety</span>
+        <span>#Convergence2026</span>
+        <span>#EdgeAI</span>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 SmartGuard Team · Built for Convergence 2026 · Problem ID: HT202603</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== SCROLL TOP ========== -->
+  <button class="scroll-top" id="scrollTop"><i class="fas fa-arrow-up"></i></button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
